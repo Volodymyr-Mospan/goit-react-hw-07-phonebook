@@ -9,8 +9,8 @@ import {
   FormBtn,
 } from 'components/Contacts/';
 import { useDispatch, useSelector } from 'react-redux';
-import { getContacts } from 'redux/selectors';
-import { addContact } from 'redux/contactSlice';
+import { selectContactsItems } from 'redux/selectors';
+import { addContact } from 'redux/operations';
 
 export const ContactForm = () => {
   const initialValues = { name: '', number: '' };
@@ -31,7 +31,7 @@ export const ContactForm = () => {
         'Phone number must be digits and can contain spaces, dashes, parentheses and can start with +'
       ),
   });
-  const contacts = useSelector(getContacts);
+  const contacts = useSelector(selectContactsItems);
   const dispatch = useDispatch();
 
   const checkingContacts = name => {
