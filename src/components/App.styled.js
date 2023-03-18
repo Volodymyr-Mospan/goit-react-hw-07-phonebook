@@ -10,6 +10,7 @@ export const StyledApp = styled.div`
   background-size: cover;
 
   display: flex;
+  flex-wrap: wrap;
   min-height: 100vh;
   text-shadow: 0 0 4px white;
 `;
