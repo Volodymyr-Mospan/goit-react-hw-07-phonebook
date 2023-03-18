@@ -13,7 +13,7 @@ import { selectContactsItems } from 'redux/selectors';
 import { addContact } from 'redux/operations';
 
 export const ContactForm = () => {
-  const initialValues = { name: '', number: '' };
+  const initialValues = { name: '', phone: '' };
   const schema = yup.object().shape({
     name: yup
       .string()
@@ -22,7 +22,7 @@ export const ContactForm = () => {
         "Name may contain only letters, apostrophe, dash and spaces. For example Adrian, Jacob Mercer, Charles de Batz de Castelmore d'Artagnan"
       )
       .required('It is required'),
-    number: yup
+    phone: yup
       .number()
       .required('It is required')
       .positive()
@@ -66,8 +66,8 @@ export const ContactForm = () => {
         </Label>
         <Label>
           Number
-          <Input type="tel" name="number" />
-          <ErrorMessage name="number" component={ErrorMessageStyled} />
+          <Input type="tel" name="phone" />
+          <ErrorMessage name="phone" component={ErrorMessageStyled} />
         </Label>
 
         <FormBtn type="submit">Add contact</FormBtn>

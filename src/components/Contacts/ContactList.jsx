@@ -3,7 +3,6 @@ import { Contact } from 'components/Contacts/';
 import { ContactListStyled, ContactStyled } from 'components/Contacts/';
 import { useSelector } from 'react-redux';
 import { selectContactsItems, selectFilter } from 'redux/selectors';
-// import { fetchContacts } from 'redux/operations';
 
 const getFilteredContacts = (contacts, filter) => {
   const normalizedFilter = filter.toLowerCase();
@@ -15,10 +14,9 @@ const getFilteredContacts = (contacts, filter) => {
 };
 
 export const ContactList = () => {
-  // const dispatch = useDispatch();
   const contacts = useSelector(selectContactsItems);
   const filter = useSelector(selectFilter);
-  const visibleContacts = getFilteredContacts(contacts, filter);
+  const visibleContacts = getFilteredContacts(contacts, filter).reverse();
 
   return (
     <ContactListStyled>

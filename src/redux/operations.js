@@ -1,38 +1,16 @@
 import axios from 'axios';
 import { createAsyncThunk } from '@reduxjs/toolkit';
-// import {
-//   fetchingError,
-//   fetchingInProgress,
-//   fetchingSuccess,
-// } from './contactSlice';
 
 axios.defaults.baseURL = 'https://641597a89a2dc94afe65849c.mockapi.io';
 
-// export const fetchContacts = () => async dispatch => {
-//   try {
-//     // Індикатор завантаження
-//     dispatch(fetchingInProgress());
-//     // HTTP-запит
-//     const response = await axios.get('/contacs');
-//     // Обробка даних
-//     dispatch(fetchingSuccess(response.data));
-//   } catch (e) {
-//     // Обробка помилки
-//     dispatch(fetchingError(e.message));
-//   }
-// };
-
-// export const fetchContacts = createAsyncThunk('contacts/fetchAll',
-//     async () => {
-//   const response = await axios.get('/contacts');
-//   return response.data;
-// });
-
-export const addContact = createAsyncThunk(
-  'contacts/addContact',
-  async (contact, thunkAPI) => {
+export const fetchContacts = createAsyncThunk(
+  'contacts/fetchAll',
+  async (_, thunkAPI) => {
     try {
-      const response = await axios.post('/tasks', { contact });
+      const response = await axios.get('/contacts');
+      if (response.data.length === 0) {
+        throw new Error('No contacts yet.');
+      }
       return response.data;
     } catch (e) {
       return thunkAPI.rejectWithValue(e.message);
@@ -40,22 +18,26 @@ export const addContact = createAsyncThunk(
   }
 );
 
-export const fetchContacts = createAsyncThunk(
-  'contacts/fetchAll',
-  // Використовуємо символ підкреслення як ім'я першого параметра,
-  // тому що в цій операції він нам не потрібен
-  async (_, thunkAPI) => {
+export const addContact = createAsyncThunk(
+  'contacts/addContact',
+  async (contact, thunkAPI) => {
+    const { name, phone } = contact;
     try {
-      const response = await axios.get('/contacts');
-      console.log(response.data);
-      if (response.data.length === 0) {
-        throw new Error('No contacts yet.');
-      }
-      // При успішному запиті повертаємо проміс із даними
+      const response = await axios.post('/contacts', { name, phone });
       return response.data;
     } catch (e) {
-      // При помилці запиту повертаємо проміс
-      // який буде відхилений з текстом помилки
+      return thunkAPI.rejectWithValue(e.message);
+    }
+  }
+);
+
+export const deleteContact = createAsyncThunk(
+  'contacts/deleteContacts',
+  async (taskId, thunkAPI) => {
+    try {
+      const response = await axios.delete(`/contacts/${taskId}`);
+      return response.data;
+    } catch (e) {
       return thunkAPI.rejectWithValue(e.message);
     }
   }
