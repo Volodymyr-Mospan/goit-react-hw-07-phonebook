@@ -11,8 +11,14 @@ import {
 import { useDispatch, useSelector } from 'react-redux';
 import { selectContactsItems } from 'redux/selectors';
 import { addContact } from 'redux/operations';
+import {
+  useAddContactsMutation,
+  useGetContactsQuery,
+} from 'redux/contactSlice';
 
 export const ContactForm = () => {
+  const { data, error, isFetching } = useGetContactsQuery();
+
   const initialValues = { name: '', phone: '' };
   const schema = yup.object().shape({
     name: yup
@@ -40,6 +46,8 @@ export const ContactForm = () => {
     );
   };
 
+  const [addContacts, { isLoading }] = useAddContactsMutation();
+
   const handleSubmit = (values, { resetForm }) => {
     const isContactsInclude = checkingContacts(values.name);
 
@@ -48,7 +56,7 @@ export const ContactForm = () => {
       return;
     }
 
-    dispatch(addContact(values));
+    addContacts(values);
     resetForm();
   };
 
@@ -70,7 +78,11 @@ export const ContactForm = () => {
           <ErrorMessage name="phone" component={ErrorMessageStyled} />
         </Label>
 
-        <FormBtn type="submit">Add contact</FormBtn>
+        {
+          <FormBtn type="submit" disabled={isLoading}>
+            {isLoading ? 'adding...' : 'Add contact'}
+          </FormBtn>
+        }
       </FormStyled>
     </Formik>
   );
