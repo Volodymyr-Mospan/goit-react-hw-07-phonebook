@@ -8,16 +8,13 @@ import {
   ErrorMessageStyled,
   FormBtn,
 } from 'components/Contacts/';
-import { useDispatch, useSelector } from 'react-redux';
-import { selectContactsItems } from 'redux/selectors';
-import { addContact } from 'redux/operations';
 import {
   useAddContactsMutation,
   useGetContactsQuery,
 } from 'redux/contactSlice';
 
 export const ContactForm = () => {
-  const { data, error, isFetching } = useGetContactsQuery();
+  const { data } = useGetContactsQuery();
 
   const initialValues = { name: '', phone: '' };
   const schema = yup.object().shape({
@@ -37,11 +34,9 @@ export const ContactForm = () => {
         'Phone number must be digits and can contain spaces, dashes, parentheses and can start with +'
       ),
   });
-  const contacts = useSelector(selectContactsItems);
-  const dispatch = useDispatch();
 
   const checkingContacts = name => {
-    return contacts.some(
+    return data.some(
       contact => contact.name.toLowerCase() === name.toLowerCase()
     );
   };
